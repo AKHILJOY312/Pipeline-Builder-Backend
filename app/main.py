@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.pipelines import router as pipelines_router
+from app.constants.routes import ROUTES
 from app.core.errors import register_exception_handlers
 
 
@@ -19,7 +20,7 @@ app.add_middleware(
 )
 
 
-@app.get("/")
+@app.get(ROUTES.ROOT)
 def read_root():
     return {"Ping": "Pong"}
 

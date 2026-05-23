@@ -1,18 +1,21 @@
 from fastapi import APIRouter, HTTPException
 
+from app.constants.messages import API_MESSAGES
+from app.constants.routes import ROUTES
+from app.constants.status_codes import HTTP_STATUS
 from app.schemas.pipeline import PipelinePayload
 from app.services.pipeline_validator import check_is_dag
 
 
-router = APIRouter(prefix="/pipelines", tags=["pipelines"])
+router = APIRouter(prefix=ROUTES.PIPELINES_PREFIX, tags=["pipelines"])
 
 
-@router.post("/parse")
+@router.post(ROUTES.PIPELINES_PARSE)
 async def parse_pipeline(payload: PipelinePayload):
     if len(payload.nodes) == 0:
         raise HTTPException(
-            status_code=400,
-            detail="Pipeline must contain at least one node",
+            status_code=HTTP_STATUS.BAD_REQUEST,
+            detail=API_MESSAGES.PIPELINE_EMPTY,
         )
 
     node_count = len(payload.nodes)
